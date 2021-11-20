@@ -260,7 +260,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		size_t res2 = res * 2;
 
 		if (count % 10000 == 0)
-			cout << count / static_cast<float>(res2*res2*res2) << endl;
+			cout << count / static_cast<long double>(res2 * res2 * res2) << endl;
 
 		if (line == "")
 			continue;
@@ -311,7 +311,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		size_t res2 = res * 2;
 
 		if (count % 10000 == 0)
-			cout << count / static_cast<float>(res2 * res2 * res2) << endl;
+			cout << count / static_cast<long double>(res2 * res2 * res2) << endl;
 
 		if (line == "")
 			continue;
@@ -356,7 +356,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		}
 		else
 		{
-			field[index] = static_cast<float>(num);
+			field[index] = static_cast<float>(num) / static_cast<float>(8.0f);
 		}
 	}
 
@@ -364,7 +364,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 
 	vector<triangle> triangles;
 
-	tesselate_field(field, triangles, 8, curr_x_min, curr_x_max, res);
+	tesselate_field(field, triangles, 1.0f, curr_x_min, curr_x_max, res);
 
 	write_triangles_to_binary_stereo_lithography_file(triangles, stl_filename);
 }
