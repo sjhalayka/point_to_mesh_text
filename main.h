@@ -356,7 +356,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		}
 		else
 		{
-			field[index] = static_cast<float>(num) / static_cast<float>(8.0f);
+			field[index] = static_cast<float>(num);
 		}
 	}
 
@@ -364,7 +364,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 
 	vector<triangle> triangles;
 
-	tesselate_field(field, triangles, 1.0f, curr_x_min, curr_x_max, res);
+	tesselate_field(field, triangles, 8, curr_x_min, curr_x_max, res);
 
 	write_triangles_to_binary_stereo_lithography_file(triangles, stl_filename);
 }
