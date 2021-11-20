@@ -48,35 +48,6 @@ using std::ios_base;
 
 
 
-void add_field_border(vector<float>& values, const float border_value, float& grid_min, float& grid_max, size_t& res)
-{
-	const float step_size = (grid_max - grid_min) / (res - 1);
-	const float new_grid_min = grid_min - step_size;
-	const float new_grid_max = grid_max + step_size;
-	const size_t new_res = res + 2;
-
-	vector<float> new_values(new_res * new_res * new_res, border_value);
-
-	// Stuff new vector with old vector values
-	for (size_t x = 0; x < res; x++)
-	{
-		for (size_t y = 0; y < res; y++)
-		{
-			for (size_t z = 0; z < res; z++)
-			{
-				if (1)//x < res / 2)
-					new_values[(x + 1) * new_res * new_res + (y + 1) * new_res + (z + 1)] = values[x * res * res + y * res + z];
-				else
-					new_values[(x + 1) * new_res * new_res + (y + 1) * new_res + (z + 1)] = 0;
-			}
-		}
-	}
-
-	values = new_values;
-	grid_min = new_grid_min;
-	grid_max = new_grid_max;
-	res = new_res;
-}
 
 bool write_triangles_to_binary_stereo_lithography_file(const vector<triangle>& triangles, const char* const file_name)
 {
@@ -154,7 +125,7 @@ bool write_triangles_to_binary_stereo_lithography_file(const vector<triangle>& t
 
 
 
-void tesselate_field(const vector<float>& values, vector<triangle>& triangle_list, const double& isovalue, const double& grid_min, const double& grid_max, const size_t& res)
+void tesselate_field(const vector<float>& values, vector<triangle>& triangle_list, const float& isovalue, const float& grid_min, const float& grid_max, const size_t& res)
 {
 
 	triangle_list.clear();
@@ -286,8 +257,10 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 	{
 		count++;
 
+		size_t res2 = res * 2;
+
 		if (count % 10000 == 0)
-			cout << count << endl;
+			cout << count / static_cast<float>(res2*res2*res2) << endl;
 
 		if (line == "")
 			continue;
@@ -335,8 +308,10 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 	{
 		count++;
 
+		size_t res2 = res * 2;
+
 		if (count % 10000 == 0)
-			cout << count << endl;
+			cout << count / static_cast<float>(res2 * res2 * res2) << endl;
 
 		if (line == "")
 			continue;
@@ -373,13 +348,18 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		index += y_index * res;
 		index += x_index;
 
-		field[index] = num;
+		if (x_index == 0 || x_index == res - 1 ||
+			y_index == 0 || y_index == res - 1 ||
+			z_index == 0 || z_index == res - 1)
+		{
+			field[index] = 0; // add blank border
+		}
+		else
+		{
+			field[index] = static_cast<float>(num);
+		}
 	}
 
-
-
-
-	add_field_border(field, 0.0f, curr_x_min, curr_x_max, res);
 	
 
 	vector<triangle> triangles;

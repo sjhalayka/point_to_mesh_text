@@ -19,22 +19,24 @@ using std::numeric_limits;
 // Modified from Paul Bourke, Polygonising a Scalar Field
 // http://local.wasp.uwa.edu.au/~pbourke/geometry/polygonise/index.html
 
+
+
 class vertex_3
 {
 public:
 
 
-	void rotate_x(const double& radians)
+	void rotate_x(const float& radians)
 	{
-		double t_y = y;
+		float t_y = y;
 
 		y = t_y * cos(radians) + z * sin(radians);
 		z = t_y * -sin(radians) + z * cos(radians);
 	}
 
-	void rotate_y(const double& radians)
+	void rotate_y(const float& radians)
 	{
-		double t_x = x;
+		float t_x = x;
 
 		x = t_x * cos(radians) + z * -sin(radians);
 		z = t_x * sin(radians) + z * cos(radians);
@@ -124,17 +126,17 @@ public:
 		return temp;
 	}
 
-	inline double dot(const vertex_3 &right) const
+	inline float dot(const vertex_3 &right) const
 	{
 		return x*right.x + y*right.y + z*right.z;
 	}
 
-	inline const double self_dot(void)
+	inline const float self_dot(void)
 	{
 		return x*x + y*y + z*z;
 	}
 
-	inline const double length(void)
+	inline const float length(void)
 	{
 		return sqrt(self_dot());
 	}
