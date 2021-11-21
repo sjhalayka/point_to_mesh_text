@@ -260,7 +260,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		size_t res2 = res * 2;
 
 		if (count % 10000 == 0)
-			cout << count / static_cast<long double>(res2 * res2 * res2) << endl;
+			cout << count / static_cast<long double>(res * res * res) << endl;
 
 		if (line == "")
 			continue;
@@ -311,7 +311,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		size_t res2 = res * 2;
 
 		if (count % 10000 == 0)
-			cout << count / static_cast<long double>(res2 * res2 * res2) << endl;
+			cout << count / static_cast<long double>(res * res * res) << endl;
 
 		if (line == "")
 			continue;
