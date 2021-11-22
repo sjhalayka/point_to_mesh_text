@@ -231,7 +231,43 @@ void tesselate_field(const vector<float>& values, vector<triangle>& triangle_lis
 }
 
 
+	
+void blur_field(vector<float> &field, size_t res)
+{
+	for (size_t i = 1; i < res - 1; i++)
+	{
+		for (size_t j = 1; j < res - 1; j++)
+		{
+			for (size_t k = 1; k < res - 1; k++)
+			{
+				float sum = 0;
 
+				for (signed char l = -1; l <= 1; l++)
+				{
+					for (signed char m = -1; m <= 1; m++)
+					{
+						for (signed char n = -1; n <= 1; n++)
+						{
+							size_t index = (k + n) * res * res;
+							index += (j + m) * res;
+							index += (i + l);
+
+							sum += field[index];
+						}
+					}
+				}
+
+				size_t centre_index = k * res * res;
+				centre_index += j * res;
+				centre_index += i;
+
+				field[centre_index] = sum / 27.0f;
+			}
+		}
+	}
+
+
+}
 
 
 
@@ -260,8 +296,8 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 
 		count++;
 
-		if (count % 10000 == 0)
-			cout << count << endl;
+		if (count % 100000 == 0)
+			cout << count / static_cast<long double>(res * res * res) << endl;
 
 		istringstream iss(line);
 
@@ -308,8 +344,8 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 
 		count++;
 
-		if (count % 10000 == 0)
-			cout << count << endl;
+		if (count % 100000 == 0)
+			cout << count / static_cast<long double>(res * res * res) << endl;
 
 		istringstream iss(line);
 
@@ -355,8 +391,11 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		}
 	}
 
+	blur_field(field, res);
+	blur_field(field, res);
+
 	vector<triangle> triangles;
-	tesselate_field(field, triangles, 8, curr_x_min, curr_x_max, res);
+	tesselate_field(field, triangles, 8.0f, curr_x_min, curr_x_max, res);
 	write_triangles_to_binary_stereo_lithography_file(triangles, stl_filename);
 }
 
