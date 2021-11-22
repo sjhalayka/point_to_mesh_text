@@ -232,8 +232,10 @@ void tesselate_field(const vector<float>& values, vector<triangle>& triangle_lis
 
 
 	
-void blur_field(vector<float> &field, size_t res)
+void blur_field(vector<float> &input_field, size_t res)
 {
+	vector<float> field(res * res * res);
+
 	for (size_t i = 1; i < res - 1; i++)
 	{
 		for (size_t j = 1; j < res - 1; j++)
@@ -252,7 +254,7 @@ void blur_field(vector<float> &field, size_t res)
 							index += (j + m) * res;
 							index += (i + l);
 
-							sum += field[index];
+							sum += input_field[index];
 						}
 					}
 				}
@@ -266,7 +268,7 @@ void blur_field(vector<float> &field, size_t res)
 		}
 	}
 
-
+	input_field = field;
 }
 
 
