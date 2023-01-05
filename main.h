@@ -283,9 +283,9 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 	float curr_x_min = numeric_limits<float>::max();
 	float curr_y_min = numeric_limits<float>::max();
 	float curr_z_min = numeric_limits<float>::max();
-	float curr_x_max = numeric_limits<float>::min();
-	float curr_y_max = numeric_limits<float>::min();
-	float curr_z_max = numeric_limits<float>::min();
+	float curr_x_max = -numeric_limits<float>::max();
+	float curr_y_max = -numeric_limits<float>::max();
+	float curr_z_max = -numeric_limits<float>::max();
 
 	string line;
 
