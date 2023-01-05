@@ -389,12 +389,12 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		}
 		else
 		{
-			field[index] = static_cast<float>(num);
+			field[index] += static_cast<float>(num);
 		}
 	}
 
-	blur_field(field, res);
-	blur_field(field, res);
+	//blur_field(field, res);
+	//blur_field(field, res);
 
 	vector<triangle> triangles;
 	tesselate_field(field, triangles, 8.0f, curr_x_min, curr_x_max, res);
