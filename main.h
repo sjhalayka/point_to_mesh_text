@@ -309,7 +309,8 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		iss >> x;
 		iss >> y;
 		iss >> z;
-		iss >> num;
+		//iss >> num;
+		num = 1;
 
 		if (x < curr_x_min)
 			curr_x_min = x;
