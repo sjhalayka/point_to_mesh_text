@@ -234,7 +234,7 @@ void tesselate_field(const vector<float>& values, vector<triangle>& triangle_lis
 	
 void blur_field(vector<float> &input_field, size_t res)
 {
-	vector<float> field(res * res * res);
+	vector<float> field(res * res * res, 0.0);
 
 	for (size_t i = 1; i < res - 1; i++)
 	{
@@ -310,7 +310,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		iss >> y;
 		iss >> z;
 		
-		num = 1;
+		num = 8;
 
 		if (x < curr_x_min)
 			curr_x_min = x;
@@ -359,7 +359,7 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		iss >> y;
 		iss >> z;
 		
-		num = 1;
+		num = 8;
 
 		float x_location = x - curr_x_min;
 		size_t x_index = static_cast<size_t>(static_cast<double>(res) * (x_location / x_extent));
@@ -395,11 +395,15 @@ void convert_point_cloud_to_mesh(const char* const points_filename, size_t res, 
 		}
 	}
 
-	//blur_field(field, res);
-	//blur_field(field, res);
+	blur_field(field, res);
+	blur_field(field, res);
+	blur_field(field, res);
+	blur_field(field, res);
+	blur_field(field, res);
+
 
 	vector<triangle> triangles;
-	tesselate_field(field, triangles, 8.0f, curr_x_min, curr_x_max, res);
+	tesselate_field(field, triangles, 0.1f, curr_x_min, curr_x_max, res);
 	write_triangles_to_binary_stereo_lithography_file(triangles, stl_filename);
 }
 
