@@ -97,6 +97,9 @@ bool write_triangles_to_binary_stereo_lithography_file(const vector<triangle>& t
 
 		normal = v0.cross(v1);
 		normal.normalize();
+		normal.x = -normal.x;
+		normal.y = -normal.y;
+		normal.z = -normal.z;
 
 		memcpy(cp, &normal.x, sizeof(float)); cp += sizeof(float);
 		memcpy(cp, &normal.y, sizeof(float)); cp += sizeof(float);
